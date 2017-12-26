@@ -41,10 +41,17 @@ enum ENEMIES
 struct Enemy
 {
 	SDL_Texture* texture;
+
 	Animation animation;
+	Animation info_animation;
+
+
 	Button* enemy_card;
+	Button* info;
 	Button* exit;
 	Button* more;
+
+	bool shown = false;
 };
 
 class j1Gui : public j1Module
@@ -79,6 +86,8 @@ public:
 	Image* AddImage(int x, int y, SDL_Texture* texture, Animation anim = {}, bool fliped = false, UIElement* parent = nullptr);
 	Button* AddButton(int x, int y, SDL_Texture* texture, Animation anim = {}, j1Module* callback = nullptr, bool dragable = false, bool fliped = false, UIElement* parent = nullptr);
 
+	Button* AddInfo(Enemy &enemy);
+
 
 	void DeleteUI(UIElement* element);
 
@@ -88,11 +97,17 @@ public:
 	bool debug = false;
 
 
-	Animation GetEnemy(uint type);
+	void GetEnemy(uint type, Enemy &enemy);
 
 	Enemy AddEnemy(int x, int y, uint type);
 
 	p2List<UIElement*> elements;
+
+private:
+	SDL_Texture* plus = nullptr;
+	SDL_Texture* cross = nullptr;
+	SDL_Texture* panel = nullptr;
+
 
 
 };

@@ -77,8 +77,25 @@ void Enemies::InGameButtons()
 			{
 				App->gui->DeleteUI(item->data.exit->parent);
 				App->gui->DeleteUI(item->data.more);
+				App->gui->DeleteUI(item->data.info);
 				App->gui->DeleteUI(item->data.exit);	
 			}
+			if (item->data.more->state == L_MOUSE_PRESSED)
+			{
+				if (item->data.shown == false)
+				{
+					App->gui->AddInfo(item->data);
+					item->data.more->state = FOCUSED;
+				}
+				else
+				{
+					App->gui->DeleteUI(item->data.info);
+					item->data.more->state = FOCUSED;
+					item->data.shown = false;
+				}
+
+			}
+
 			item = item->next;
 		}
 	}

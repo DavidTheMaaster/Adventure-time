@@ -32,6 +32,10 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 // Called before the first frame
 bool j1Gui::Start()
 {
+	cross = App->tex->Load("gui/cross.png");
+	plus = App->tex->Load("gui/plus.png");
+	panel = App->tex->Load("characters/enemies_info.png");
+
 	return true;
 }
 
@@ -71,6 +75,11 @@ bool j1Gui::PostUpdate()
 bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
+
+	App->tex->UnLoad(cross);
+	App->tex->UnLoad(panel);
+	App->tex->UnLoad(plus);
+
 
 	p2List_item<UIElement*>* item;
 	item = elements.start;
@@ -129,8 +138,6 @@ Button* j1Gui::AddButton(int x, int y, SDL_Texture* texture, Animation anim, j1M
 	return button;
 }
 
-
-
 void j1Gui::DeleteUI(UIElement * element)
 {
 	int index = elements.find(element);
@@ -138,6 +145,81 @@ void j1Gui::DeleteUI(UIElement * element)
 		elements.del(elements.At(index));
 }
 
+char * j1Gui::GetFont(uint font)
+{
+	char* path = nullptr;
+	switch (font)
+	{
+	case CARTOON:
+		path = "fonts/cartoon.ttf";
+		break;
+	case ADVENTURE_TIME:
+		path = "fonts/adventure_time.ttf";
+		break;
+	default:
+		break;
+	}
+	return path;
+}
+
+Enemy j1Gui::AddEnemy(int x, int y, uint type)
+{
+	Enemy enemy;
+
+	Animation enemy_animation;
+
+	App->gui->GetEnemy(type, enemy);
+
+	
+	enemy.texture = App->tex->Load("characters/enemies.png");
+
+
+	enemy.enemy_card = App->gui->AddButton(x, y, enemy.texture, enemy.animation, this, true);
+
+
+	SDL_Rect r = enemy.animation.GetCurrentFrame();
+
+	enemy.exit = App->gui->AddButton(r.w - 17, r.h - 17, cross, {}, this, false, false, enemy.enemy_card);
+	enemy.more = App->gui->AddButton(r.w - 17, - 17, plus, {}, this, false, false, enemy.enemy_card);
+
+
+
+	return enemy;
+}
+
+
+Button * j1Gui::AddInfo(Enemy &enemy)
+{
+	enemy.shown = true;
+
+	SDL_Rect r = enemy.animation.GetCurrentFrame();
+
+	enemy.info = AddButton(r.w, 0, panel, enemy.info_animation ,this,false,false,enemy.enemy_card);
+
+	return enemy.info;
+}
+
+
+
+void j1Gui::GetEnemy(uint type, Enemy &enemy)
+{
+	switch (type)
+	{
+	case ACHUCHA_HOMBRES:
+		enemy.animation.PushBack({ 0,0,217,412 });
+		enemy.info_animation.PushBack({ 0,0,203,412 });
+		break;
+	case CHUM_GLUBS:
+		enemy.animation.PushBack({ 216,0,425,412 });
+		enemy.info_animation.PushBack({ 204,0,203,412 });
+		break;
+	default:
+		break;
+	}
+
+	enemy.animation.Reset();
+	enemy.info_animation.Reset();
+}
 
 
 SDL_Color j1Gui::GetColor(int color)
@@ -186,69 +268,4 @@ SDL_Color j1Gui::GetColor(int color)
 		break;
 	}
 	return ret;
-}
-
-char * j1Gui::GetFont(uint font)
-{
-	char* path = nullptr;
-	switch (font)
-	{
-	case CARTOON:
-		path = "fonts/cartoon.ttf";
-		break;
-	case ADVENTURE_TIME:
-		path = "fonts/adventure_time.ttf";
-		break;
-	default:
-		break;
-	}
-	return path;
-}
-
-Enemy j1Gui::AddEnemy(int x, int y, uint type)
-{
-	Enemy enemy;
-
-	Animation enemy_animation;
-
-	enemy.animation = App->gui->GetEnemy(type);
-	enemy.animation.Reset();
-
-
-	enemy.texture = App->tex->Load("characters/enemies.png");
-	SDL_Texture* cross = App->tex->Load("gui/cross.png");
-	SDL_Texture* plus = App->tex->Load("gui/plus.png");
-
-
-	enemy.enemy_card = App->gui->AddButton(x, y, enemy.texture, enemy.animation, this, true);
-
-
-	SDL_Rect r = enemy.animation.GetCurrentFrame();
-
-	enemy.exit = App->gui->AddButton(r.w - 17, r.h - 17, cross, {}, this, false, false, enemy.enemy_card);
-	enemy.more = App->gui->AddButton(r.w - 17, - 17, plus, {}, this, false, false, enemy.enemy_card);
-
-
-
-	return enemy;
-}
-
-
-Animation j1Gui::GetEnemy(uint type)
-{
-	Animation enemy_animation;
-
-	switch (type)
-	{
-	case ACHUCHA_HOMBRES:
-		enemy_animation.PushBack({ 0,0,217,412 });
-		break;
-	case CHUM_GLUBS:
-		enemy_animation.PushBack({ 216,0,425,412 });
-		break;
-	default:
-		break;
-	}
-
-	return enemy_animation;
 }
