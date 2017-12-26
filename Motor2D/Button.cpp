@@ -11,20 +11,21 @@ Button::Button(int x, int y, uint type, SDL_Texture * texture, Animation* anim, 
 
 	this->parent = parent;
 
-	if (this->parent != nullptr)
+	if (parent != nullptr)
 	{
-		pos.x = this->parent->pos.x + x;
-		pos.y = this->parent->pos.y + y;
+		pos.x = parent->pos.x + x;
+		pos.y = parent->pos.y + y;
+		parent->child = this;
 	}
-	else
-	{
+	else {
 		pos.x = x;
 		pos.y = y;
 	}
+
+
 
 	if (anim != nullptr)
 		this->anim = *anim;
 
 	this->fliped = fliped;
-	int patata = 2;
 }

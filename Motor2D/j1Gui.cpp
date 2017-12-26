@@ -204,3 +204,47 @@ char * j1Gui::GetFont(uint font)
 	}
 	return path;
 }
+
+Enemy j1Gui::AddEnemy(int x, int y, uint type)
+{
+	Enemy enemy;
+
+	Animation enemy_animation;
+
+	enemy.animation = App->gui->GetEnemy(type);
+	enemy.animation.Reset();
+
+
+	enemy.texture = App->tex->Load("characters/enemies.png");
+	SDL_Texture* cross = App->tex->Load("gui/cross.png");
+
+	enemy.enemy_card = App->gui->AddButton(x, y, enemy.texture, enemy.animation, this, true);
+
+
+	SDL_Rect r = enemy.animation.GetCurrentFrame();
+
+	enemy.exit = App->gui->AddButton(r.w - 17, r.h - 17, cross, {}, this, false, false, enemy.enemy_card);
+
+
+	return enemy;
+}
+
+
+Animation j1Gui::GetEnemy(uint type)
+{
+	Animation enemy_animation;
+
+	switch (type)
+	{
+	case ACHUCHA_HOMBRES:
+		enemy_animation.PushBack({ 0,0,217,412 });
+		break;
+	case CHUM_GLUBS:
+		enemy_animation.PushBack({ 216,0,425,412 });
+		break;
+	default:
+		break;
+	}
+
+	return enemy_animation;
+}

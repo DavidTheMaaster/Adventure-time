@@ -2,13 +2,19 @@
 #include "j1App.h"
 #include "j1Gui.h"
 
-Label::Label(int pos_x, int pos_y, uint type, const SDL_Texture * texture, UIElement* parent) : UIElement(pos.x, pos.y, type, texture, parent)
+Label::Label(int x, int y, uint type, const SDL_Texture * texture, UIElement* parent) : UIElement(pos.x, pos.y, type, texture, parent)
 {
 	this->parent = parent;
 
-	this->parent = parent;
+	if (parent != nullptr)
+	{
+		pos.x = parent->pos.x + x;
+		pos.y = parent->pos.y + y;
+	}
+	else {
+		pos.x = x;
+		pos.y = y;
+	}
 
-	pos.x = pos_x;
-	pos.y = pos_y;
 	
 }

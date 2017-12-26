@@ -43,6 +43,7 @@ public:
 
 	j1Module* callback = nullptr;
 	UIElement* parent = nullptr;
+	UIElement* child = nullptr;
 
 	bool debug;
 

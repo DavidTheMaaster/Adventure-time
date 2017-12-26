@@ -38,7 +38,13 @@ enum ENEMIES
 };
 
 
-
+struct Enemy
+{
+	SDL_Texture* texture;
+	Animation animation;
+	Button* enemy_card;
+	Button* exit;
+};
 
 class j1Gui : public j1Module
 {
@@ -79,6 +85,11 @@ public:
 	SDL_Color GetColor(int color);
 	char* GetFont(uint font);
 	bool debug = false;
+
+
+	Animation GetEnemy(uint type);
+
+	Enemy AddEnemy(int x, int y, uint type);
 
 	p2List<UIElement*> elements;
 

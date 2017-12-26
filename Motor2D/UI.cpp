@@ -26,23 +26,10 @@ void UIElement::Draw()
 	if (anim.GetCurrentFrame().w != 0)
 		rect = anim.GetCurrentFrame();
 
-
-	if (this->parent != nullptr)
-	{
-		if (type == LABEL)
-			App->render->Blit(texture, this->parent->pos.x + pos.x, this->parent->pos.y + pos.y, {}, 0.0, fliped);
-
-		else
-			App->render->Blit(texture, this->parent->pos.x + pos.x, this->parent->pos.y + pos.y, &(rect), 0.0, fliped);
-	}
+	if (type == LABEL)
+		App->render->Blit(texture, pos.x, pos.y, {}, 0.0, fliped);
 	else
-	{
-		if (type == LABEL)
-			App->render->Blit(texture, pos.x, pos.y, {}, 0.0, fliped);
-
-		else
-			App->render->Blit(texture,pos.x, pos.y, &(rect), 0.0, fliped);
-	}
+		App->render->Blit(texture, pos.x, pos.y, &(rect), 0.0, fliped);
 	
 
 	if (App->gui->debug) 
@@ -105,6 +92,8 @@ void UIElement::Update()
 					App->input->GetMouseMotion(mouse_movement.x, mouse_movement.y);
 					pos.x += mouse_movement.x;
 					pos.y += mouse_movement.y;
+					this->child->pos.x += mouse_movement.x;
+					this->child->pos.y += mouse_movement.y;
 					mouse2.x = mouse_x;
 					mouse2.y = mouse_y;
 				}
