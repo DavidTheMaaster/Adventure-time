@@ -35,6 +35,8 @@ bool j1Gui::Start()
 	cross = App->tex->Load("gui/cross.png");
 	plus = App->tex->Load("gui/plus.png");
 	panel = App->tex->Load("characters/enemies_info.png");
+	health = App->tex->Load("characters/salud.png");
+	health_controlers = App->tex->Load("gui/health.png");
 
 	return true;
 }
@@ -142,7 +144,9 @@ void j1Gui::DeleteUI(UIElement * element)
 {
 	int index = elements.find(element);
 	if (index > -1)
+	{
 		elements.del(elements.At(index));
+	}
 }
 
 char * j1Gui::GetFont(uint font)
@@ -166,22 +170,31 @@ Enemy j1Gui::AddEnemy(int x, int y, uint type)
 {
 	Enemy enemy;
 
-	Animation enemy_animation;
-
-	App->gui->GetEnemy(type, enemy);
-
+		GetEnemy(type, enemy);
 	
 	enemy.texture = App->tex->Load("characters/enemies.png");
 
 
-	enemy.enemy_card = App->gui->AddButton(x, y, enemy.texture, enemy.animation, this, true);
+	enemy.enemy_card = AddButton(x, y, enemy.texture, enemy.animation, this, true);
+
+
 
 
 	SDL_Rect r = enemy.animation.GetCurrentFrame();
+	Animation more_h;
+	more_h.PushBack({ 0,0,22,22 });
+	more_h.Reset();
 
-	enemy.exit = App->gui->AddButton(r.w - 17, r.h - 17, cross, {}, this, false, false, enemy.enemy_card);
-	enemy.more = App->gui->AddButton(r.w - 17, - 17, plus, {}, this, false, false, enemy.enemy_card);
+	Animation less_h;
+	less_h.PushBack({ 22,0,22,22 });
+	less_h.Reset();
 
+	enemy.lifes = AddImage(r.w - 201, r.h - 53, health, {}, false, enemy.enemy_card);
+	enemy.exit = AddButton(r.w - 17, r.h - 17, cross, {}, this, false, false, enemy.enemy_card);
+	enemy.more = AddButton(r.w - 17, - 17, plus, {}, this, false, false, enemy.enemy_card);
+	enemy.more_health = AddButton(0, r.h-8, health_controlers, more_h, this, false, false, enemy.enemy_card);
+	enemy.less_health = AddButton(27, r.h-8, health_controlers, less_h, this, false, false, enemy.enemy_card);
+	ChangeLife(enemy);
 
 
 	return enemy;
@@ -201,6 +214,51 @@ Button * j1Gui::AddInfo(Enemy &enemy)
 
 
 
+void j1Gui::ChangeLife(Enemy & enemy)
+{
+
+	Animation zero, one, two, three, four, five, six, seven;
+	zero.PushBack({ 0,0,178,34 });
+	one.PushBack({ 0,35,178,34 });
+	two.PushBack({ 0,70,178,34 });
+	three.PushBack({ 0,105,178,34 });
+	four.PushBack({ 0,140,178,34 });
+	five.PushBack({ 179,0,178,34 });
+	six.PushBack({ 179,35,178,34 });
+	seven.PushBack({ 179,70,178,34 });
+
+	switch (enemy.life)
+	{
+	case 0:
+		enemy.lifes->anim = zero;
+		break;
+	case 1:
+		enemy.lifes->anim = one;
+		break;
+	case 2:
+		enemy.lifes->anim = two;
+		break;
+	case 3:
+		enemy.lifes->anim = three;
+		break;
+	case 4:
+		enemy.lifes->anim = four;
+		break;
+	case 5:
+		enemy.lifes->anim = five;
+		break;
+	case 6:
+		enemy.lifes->anim = six;
+		break;
+	case 7:
+		enemy.lifes->anim = seven;
+		break;
+	default:
+		break;
+	}
+	enemy.lifes->anim.Reset();
+}
+
 void j1Gui::GetEnemy(uint type, Enemy &enemy)
 {
 	switch (type)
@@ -208,10 +266,12 @@ void j1Gui::GetEnemy(uint type, Enemy &enemy)
 	case ACHUCHA_HOMBRES:
 		enemy.animation.PushBack({ 0,0,217,412 });
 		enemy.info_animation.PushBack({ 0,0,203,412 });
+		enemy.life = 1;
 		break;
 	case CHUM_GLUBS:
 		enemy.animation.PushBack({ 216,0,425,412 });
 		enemy.info_animation.PushBack({ 204,0,203,412 });
+		enemy.life = 4;
 		break;
 	default:
 		break;

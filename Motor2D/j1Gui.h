@@ -46,12 +46,17 @@ struct Enemy
 	Animation info_animation;
 
 
-	Button* enemy_card;
-	Button* info;
-	Button* exit;
-	Button* more;
+	Button* enemy_card = nullptr;
+	Button* info = nullptr;
+	Button* exit = nullptr;
+	Button* more = nullptr;
+	Button* more_health;
+	Button* less_health;
+
+	Image* lifes = nullptr;
 
 	bool shown = false;
+	int life = 0;
 };
 
 class j1Gui : public j1Module
@@ -97,6 +102,9 @@ public:
 	bool debug = false;
 
 
+	void ChangeLife(Enemy &enemy);
+
+
 	void GetEnemy(uint type, Enemy &enemy);
 
 	Enemy AddEnemy(int x, int y, uint type);
@@ -105,9 +113,10 @@ public:
 
 private:
 	SDL_Texture* plus = nullptr;
+	SDL_Texture* health_controlers = nullptr;
 	SDL_Texture* cross = nullptr;
 	SDL_Texture* panel = nullptr;
-
+	SDL_Texture* health = nullptr;
 
 
 };

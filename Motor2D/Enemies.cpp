@@ -79,6 +79,10 @@ void Enemies::InGameButtons()
 				App->gui->DeleteUI(item->data.more);
 				App->gui->DeleteUI(item->data.info);
 				App->gui->DeleteUI(item->data.exit);	
+				App->gui->DeleteUI(item->data.lifes);
+				App->gui->DeleteUI(item->data.more_health);
+				App->gui->DeleteUI(item->data.less_health);
+
 			}
 			if (item->data.more->state == L_MOUSE_PRESSED)
 			{
@@ -95,7 +99,20 @@ void Enemies::InGameButtons()
 				}
 
 			}
-
+			if (item->data.less_health->state == L_MOUSE_PRESSED)
+			{
+				if (item->data.life >= 0)
+					item->data.life--;
+				App->gui->ChangeLife(item->data);
+				item->data.less_health->state = FOCUSED;
+			}
+			if (item->data.more_health->state == L_MOUSE_PRESSED)
+			{
+				if (item->data.life < 8)
+					item->data.life++;
+				App->gui->ChangeLife(item->data);
+				item->data.more_health->state = FOCUSED;
+			}
 			item = item->next;
 		}
 	}
