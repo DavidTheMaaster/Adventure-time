@@ -6,6 +6,11 @@ Image::Image(int x, int y, uint type, SDL_Texture * texture, Animation* anim, UI
 {
 	this->parent = parent;
 
+
+	original_pos.x = x;
+	original_pos.y = y;
+
+
 	if (parent != nullptr)
 	{
 		pos.x = parent->pos.x + x;

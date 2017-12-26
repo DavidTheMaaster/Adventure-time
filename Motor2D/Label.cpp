@@ -6,6 +6,11 @@ Label::Label(int x, int y, uint type, const SDL_Texture * texture, UIElement* pa
 {
 	this->parent = parent;
 
+
+	original_pos.x = x;
+	original_pos.y = y;
+
+
 	if (parent != nullptr)
 	{
 		pos.x = parent->pos.x + x;

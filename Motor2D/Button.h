@@ -10,8 +10,6 @@ class Button : public UIElement
 {
 public:
 	Button(int pos_x, int pos_y, uint type, SDL_Texture* texture, Animation* anim,  j1Module* callback, bool dragable = false, bool fliped = false, UIElement* parent = nullptr);
-public:
-	int patata;
 };
 
 

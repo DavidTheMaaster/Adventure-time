@@ -22,6 +22,11 @@ UIElement::UIElement(int x, int y, uint type, const SDL_Texture* texture, UIElem
 
 void UIElement::Draw()
 {
+	if (parent != nullptr && pos != original_pos)
+	{
+		pos.x = parent->pos.x + original_pos.x;
+		pos.y = parent->pos.y + original_pos.y;
+	}
 
 	if (anim.GetCurrentFrame().w != 0)
 		rect = anim.GetCurrentFrame();
@@ -92,8 +97,6 @@ void UIElement::Update()
 					App->input->GetMouseMotion(mouse_movement.x, mouse_movement.y);
 					pos.x += mouse_movement.x;
 					pos.y += mouse_movement.y;
-					this->child->pos.x += mouse_movement.x;
-					this->child->pos.y += mouse_movement.y;
 					mouse2.x = mouse_x;
 					mouse2.y = mouse_y;
 				}

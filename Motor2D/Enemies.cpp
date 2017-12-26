@@ -64,19 +64,25 @@ void Enemies::InGameButtons()
 	{
 		if (enemy_selector[i]->state == L_MOUSE_PRESSED)
 		{
-			enemy[i] = App->gui->AddEnemy(200, 200, i);
+			enemy.add(App->gui->AddEnemy(200, 200, i));
 			enemy_selector[i]->state = FOCUSED;
-			
+			 
 		}
-		if (enemy[i].texture != nullptr)
+		p2List_item<Enemy> *item;
+		item = enemy.start;
+
+		while (item != nullptr)
 		{
-			if (enemy[i].exit->state == L_MOUSE_PRESSED)
+			if (item->data.exit->state == L_MOUSE_PRESSED)
 			{
-				App->gui->DeleteUI(enemy[i].exit->parent);
-				App->gui->DeleteUI(enemy[i].exit);
+				App->gui->DeleteUI(item->data.exit->parent);
+				App->gui->DeleteUI(item->data.more);
+				App->gui->DeleteUI(item->data.exit);	
 			}
+			item = item->next;
 		}
 	}
 }
+
 
 

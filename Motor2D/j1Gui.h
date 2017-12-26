@@ -44,6 +44,7 @@ struct Enemy
 	Animation animation;
 	Button* enemy_card;
 	Button* exit;
+	Button* more;
 };
 
 class j1Gui : public j1Module

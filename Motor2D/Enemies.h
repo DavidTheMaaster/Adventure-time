@@ -40,7 +40,7 @@ private:
 
 	//Enemy Buttons
 	Button* enemy_selector[MAX_ENEMIES];
-	Enemy enemy[MAX_ENEMIES];
+	p2List<Enemy> enemy;
 };
 
 #endif // !_ENEMIES_H__

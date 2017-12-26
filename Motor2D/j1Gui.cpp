@@ -217,6 +217,8 @@ Enemy j1Gui::AddEnemy(int x, int y, uint type)
 
 	enemy.texture = App->tex->Load("characters/enemies.png");
 	SDL_Texture* cross = App->tex->Load("gui/cross.png");
+	SDL_Texture* plus = App->tex->Load("gui/plus.png");
+
 
 	enemy.enemy_card = App->gui->AddButton(x, y, enemy.texture, enemy.animation, this, true);
 
@@ -224,6 +226,8 @@ Enemy j1Gui::AddEnemy(int x, int y, uint type)
 	SDL_Rect r = enemy.animation.GetCurrentFrame();
 
 	enemy.exit = App->gui->AddButton(r.w - 17, r.h - 17, cross, {}, this, false, false, enemy.enemy_card);
+	enemy.more = App->gui->AddButton(r.w - 17, - 17, plus, {}, this, false, false, enemy.enemy_card);
+
 
 
 	return enemy;

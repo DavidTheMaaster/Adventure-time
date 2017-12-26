@@ -35,6 +35,7 @@ public:
 	SDL_Rect rect;
 	SDL_Rect current_animation;
 	iPoint pos;
+	iPoint original_pos;
 	bool fliped;
 	int w;
 	int h;
